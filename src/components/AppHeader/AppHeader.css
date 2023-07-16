@@ -1,0 +1,36 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-image: url(https://marketplace.canva.com/EAFH2x7hYI4/1/0/1600w/canva-beige-minimalist-shape-twitter-header-VVKGEYQ89Ho.jpg);
+  padding: 0;
+  width: 1410px;
+}
+
+.left-buttons,
+.right-buttons,
+.Homebutton {
+  background-color: transparent;
+  border: none;
+  color: #5e35b1;
+}
+
+.SignUpbutton,
+.profile_save_btn,
+.Loginbutton,
+.logoutButton {
+  background-color: transparent;
+  border: none;
+  color: #5e35b1;
+  box-shadow: none; 
+}
+
+.left-buttons,
+.right-buttons,
+.Homebutton:hover,
+.SignUpbutton,
+.Loginbutton,
+.profile_save_btn:hover,
+.logoutButton:hover {
+  background-color: transparent;
+}

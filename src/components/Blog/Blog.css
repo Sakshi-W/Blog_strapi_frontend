@@ -1,0 +1,35 @@
+/* blog.css */
+.blogDataContainer {
+  padding: 2rem;
+}
+
+.cardImage {
+  height: 140px;
+}
+
+.cardContent {
+  padding: 16px;
+}
+
+.cardTitle {
+  font-size: 20px;
+}
+
+.cardDescription {
+  color: #666;
+}
+
+.card {
+  max-width: 345px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.blogDataGrid {
+  max-width: 1200px;
+  width: 100%;
+}

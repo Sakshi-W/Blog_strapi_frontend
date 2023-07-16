@@ -1,0 +1,35 @@
+@font-face {
+    font-family: 'Gentium Plus';
+    src: url('./Gentium_Plus/GentiumPlus-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Poppins';
+    src: url('./Poppins/Poppins-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Proza_Libre';
+    src: url('Proza_Libre/ProzaLibre-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Kurale';
+    src: url('./Kurale/Kurale-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Arapey';
+    src: url('./Arapey//Arapey-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
