@@ -11,12 +11,12 @@ export default function Home({blogs}) {
     <>
       <AppHeader />
       <div>
-        <h2 color="black">Hello World</h2>
+        <h2 color="black" >Hello World</h2>
         <p className="paragraph">
           hjkjsdfhkjshdk hsdkuadhakushdak iuadhyasiudhaiudha haidwuhadsiwuhwsu hiushaiduah swhadiudhishu
           iuhsiaudhai
         </p>
-        <div style={{ paddingTop: '15rem' }}>
+        <div style={{ paddingTop: '15rem',}}>
           <Blog  blogs={blogs?blogs:""}/>
         </div>
       </div>

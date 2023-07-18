@@ -1,5 +1,3 @@
-// BlogContent.jsx
-
 import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/system';
 import { Grid, Typography } from '@mui/material';
@@ -9,6 +7,9 @@ const RootContainer = styled('div')({
   width: '100%',
   paddingBottom: '10px',
   backgroundColor: '#f9f9f9',
+  backgroundImage: `url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWJ5IktHDg0fMVPXyozK4Te4Bt9v2aDj55NZxMRnpGhk1FginlOg2pPOXC8iy4H1OriL0&usqp=CAU)`,
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
 });
 
 const ContentContainer = styled('div')({
@@ -49,24 +50,30 @@ const Content = styled(Typography)({
   paddingTop: '5px',
 });
 
-function BlogContent() {
+export default function BlogContent() {
   const { id } = useParams();
   const [blog, setBlog] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch(`http://localhost:1337/api/blogs/${id}`)
       .then(response => response.json())
       .then(data => {
         console.log('Response data:', data);
-        setBlog(data);
+        setBlog(data.attributes);
+        setIsLoading(false);
       })
       .catch(error => {
         console.error('Error fetching blog:', error);
       });
   }, [id]);
 
+  if (isLoading) {
+    return <p>Loading...</p>; // Show a loading state while fetching the data
+  }
+
   if (!blog) {
-    return <Typography variant="h2">Blog not found</Typography>;
+    return <p>not found</p>; // Don't render anything if the blog data is not available
   }
 
   return (
@@ -74,7 +81,12 @@ function BlogContent() {
       <ContentContainer>
         <GridContainer container>
           <Grid item xs={12} sm={12} md={8}>
-            <Image src={blog.coverImg} alt="Blog Cover" />
+            {blog.coverImg && (
+              <Image
+                src={`http://localhost:1337${blog.coverImg.url}`}
+                alt="Blog Cover"
+              />
+            )}
             <Title variant="h1">{blog.blogTitle}</Title>
             <Content>{blog.blogContent}</Content>
           </Grid>
@@ -83,5 +95,3 @@ function BlogContent() {
     </RootContainer>
   );
 }
-
-export default BlogContent;
