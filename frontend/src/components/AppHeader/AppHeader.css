@@ -1,12 +1,19 @@
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-image: url(https://marketplace.canva.com/EAFH2x7hYI4/1/0/1600w/canva-beige-minimalist-shape-twitter-header-VVKGEYQ89Ho.jpg);
-  padding: 0;
-  width: 1410px;
+  
+  background-size: contain; /* Adjust to "cover" if you want the image to cover the entire header */
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
+
+
+.logo-image {
+  max-height: 100%; /* Set the maximum height of the image to fit the header */
+  max-width: 100%; /* Set the maximum width of the image to fit the header */
+  display: block; /* Remove any inline spacing to avoid unexpected gaps */
+  margin: 0 auto;
+  height: 60px; /* Center the image horizontally (if needed) */
+}
 .left-buttons,
 .right-buttons,
 .Homebutton {
@@ -33,4 +40,8 @@
 .profile_save_btn:hover,
 .logoutButton:hover {
   background-color: transparent;
+}
+
+.header {
+  height: 100px;
 }

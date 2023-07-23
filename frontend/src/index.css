@@ -3,3 +3,18 @@ body {
     margin: 0;
     padding: 0;
   }
+/* Example for Poppins font */
+@font-face {
+  font-family: "Poppins";
+  src: url("../fonts/Poppins-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Example for ProzaLibre font */
+@font-face {
+  font-family: "ProzaLibre";
+  src: url("../fonts/ProzaLibre-BoldItalic.ttf") format("truetype");
+  font-weight: bold;
+  font-style: italic;
+}

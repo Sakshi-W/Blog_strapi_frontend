@@ -1,97 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import { styled } from '@mui/system';
-import { Grid, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Footer from '../../components/AppFooter/AppFooter';
+import AppHeader from '../AppHeader/AppHeader';
 
-const RootContainer = styled('div')({
-  width: '100%',
-  paddingBottom: '10px',
-  backgroundColor: '#f9f9f9',
-  backgroundImage: `url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWJ5IktHDg0fMVPXyozK4Te4Bt9v2aDj55NZxMRnpGhk1FginlOg2pPOXC8iy4H1OriL0&usqp=CAU)`,
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: 'cover',
-});
+const defaultImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMlRnalLvKNKpdmJxQqOYDCml5SoKkcq4g-g&usqp=CAU";
 
-const ContentContainer = styled('div')({
-  maxWidth: '1240px',
-  margin: '0 auto',
-});
-
-const GridContainer = styled(Grid)({
-  display: 'grid',
-  gridTemplateColumns: 'repeat(3, 1fr)',
-  gap: '8px',
-  padding: '4px',
-  paddingTop: '20px',
-  color: 'black',
-  '& > *': {
-    gridColumn: 'span 2',
-  },
-  '@media (max-width: 600px)': {
-    gridTemplateColumns: 'repeat(1, 1fr)',
-    paddingTop: '20px',
-  },
-});
-
-const Image = styled('img')({
-  height: '224px',
-  width: '100%',
-  objectFit: 'cover',
-});
-
-const Title = styled(Typography)({
-  fontWeight: 'bold',
-  fontSize: '2xl',
-  marginTop: '1px',
-  paddingTop: '5px',
-});
-
-const Content = styled(Typography)({
-  paddingTop: '5px',
-});
-
-export default function BlogContent() {
+const BlogContent = () => {
   const { id } = useParams();
-  const [blog, setBlog] = useState(null);
+  const [blog, setBlog] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:1337/api/blogs/${id}`)
+    fetch(`http://localhost:1337/api/blogs/${id}?populate=*`)
       .then(response => response.json())
       .then(data => {
-        console.log('Response data:', data);
-        setBlog(data.attributes);
-        setIsLoading(false);
+        if (data.data && data.data.attributes) {
+          setBlog(data.data.attributes);
+          setIsLoading(false);
+        } else {
+          console.error('Blog data not found');
+          setIsLoading(false);
+        }
       })
       .catch(error => {
         console.error('Error fetching blog:', error);
+        setIsLoading(false);
       });
   }, [id]);
 
   if (isLoading) {
-    return <p>Loading...</p>; // Show a loading state while fetching the data
-  }
-
-  if (!blog) {
-    return <p>not found</p>; // Don't render anything if the blog data is not available
+    return <div>Loading...</div>;
   }
 
   return (
-    <RootContainer>
-      <ContentContainer>
-        <GridContainer container>
-          <Grid item xs={12} sm={12} md={8}>
-            {blog.coverImg && (
-              <Image
-                src={`http://localhost:1337${blog.coverImg.url}`}
-                alt="Blog Cover"
-              />
-            )}
-            <Title variant="h1">{blog.blogTitle}</Title>
-            <Content>{blog.blogContent}</Content>
-          </Grid>
-        </GridContainer>
-      </ContentContainer>
-    </RootContainer>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh',alignItems: 'center', justifyContent: 'center' }}>
+     
+      <div style={{ flex: '1', paddingBottom: '100px',textAlign: 'center', maxWidth: '800px'  }}>
+        <h1 style={{paddingBottom:'20px', alignItems:'center', fontSize:'2.4rem', textDecoration:'underline'}}>{blog.blogTitle}</h1>
+        <p  style={{fontSize:'1.9rem'}}>{blog.blogDesc}</p>
+        {blog.coverImg1 && blog.coverImg1.data && blog.coverImg1.data.attributes && blog.coverImg1.data.attributes.url ? (
+          <img
+            src={`http://localhost:1337${blog.coverImg1.data.attributes.url}`}
+            alt="Cover Image"
+            style={{ width: '100%', maxWidth: '1000px' }}
+          />
+        ) : (
+          <div>
+            {/* Display the default image */}
+            <img
+              src={defaultImageUrl}
+              alt="Default Cover Image"
+              style={{ width: '100%', maxWidth: '500px' }}
+            />
+          </div>
+        )}
+        <p style={{fontSize:'1.7rem'}}>{blog.blogContent}</p>
+      </div>
+      
+    </div>
   );
-}
+};
+
+export default BlogContent;

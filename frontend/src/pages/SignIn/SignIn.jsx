@@ -17,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 import { API } from "../../constant";
 import { setToken } from "../../helpers";
 import { getRandomImage } from "../../helpers";
-import AppHeader from "../../components/AppHeader/AppHeader";
 import './SignIn.css'; // Import the CSS file
 
 function SignIn({ hideAppHeader }) {
@@ -28,7 +27,7 @@ function SignIn({ hideAppHeader }) {
   const { setUser } = useAuthContext();
 
   useEffect(() => {
-    document.body.style.backgroundImage = `url("https://i0.wp.com/www.minimalism.one/wp-content/uploads/2022/12/1642253642_14-adonius-club-p-fon-minimalizm-bezhevii-14-1.jpg?resize=1920%2C1080&ssl=1")`;
+    document.body.style.backgroundImage = `url("https://marketplace.canva.com/EAEthkBVLfQ/1/0/1600w/canva-blush-wave-desktop-wallpaper-drvq3zaYl2E.jpg")`;
     return () => {
       document.body.style.backgroundImage = "";
     };
@@ -64,10 +63,7 @@ function SignIn({ hideAppHeader }) {
     } catch (error) {
       console.error(error);
       setError(error?.message ?? "Something went wrong!");
-    } finally {
-      setIsLoading(false);
-      hideAppHeader(); // Hide the AppHeader component
-    }
+    } 
   };
 
   return (
@@ -80,7 +76,7 @@ function SignIn({ hideAppHeader }) {
           minHeight: '100vh',
         }}
       >
-        {hideAppHeader && <AppHeader />}
+       
         <CssBaseline />
         <Box
           component={Paper}
