@@ -1,22 +1,25 @@
 import React from "react";
 import { Button, Grid, Toolbar } from "@mui/material";
-import { useNavigate, useLocation } from "react-router-dom"; // Import useLocation hook
+import { useNavigate, useLocation } from "react-router-dom";
+
 import { useAuthContext } from "../../context/AuthContext";
 import { removeToken } from "../../helpers";
 import './AppHeader.css'; // Import the CSS file
+
 
 // Import the logo image
 import logoImage from "../../assets/logo.png";
 
 const AppHeader = () => {
-  const { user } = useAuthContext();
+  const { user, setUser } = useAuthContext();
   const navigate = useNavigate();
-  
+
   // Get the current location
   const location = useLocation();
 
   const handleLogout = () => {
     removeToken();
+    setUser(null); // Set user to null to indicate user logout
     navigate("/signin", { replace: true });
   };
 
@@ -29,7 +32,7 @@ const AppHeader = () => {
   }
 
   return (
-    <Toolbar className="header" style={{ height: '100px', borderBottom: '2px solid grey' }} >
+    <Toolbar className="header" style={{ height: '100px',backgroundColor: 'rgba(0, 0, 0, 0.2)', borderBottom: '2px solid grey' }} >
       <Grid container alignItems="center" spacing={2}>
         <Grid item className="left-buttons">
           {/* Add the logo image */}

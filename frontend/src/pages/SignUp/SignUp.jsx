@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import Box from "@mui/material/Box";
-import Typography from '@mui/material/Typography';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { CircularProgress } from "@mui/material";
-import { useAuthContext } from "../../context/AuthContext";
+import React, { useState, useEffect } from "react";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Paper,
+  Box,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+
+import { useAuthContext } from "../../context/AuthContext";
 import { API } from "../../constant";
 import { setToken } from "../../helpers";
-import { getRandomImage } from "../../helpers";
-import './SignUp.css'; // Import the CSS file
+import "./SignUp.css"; // Import the CSS file
 
 function SignUp({ hideAppHeader }) {
   const [form, setForm] = useState({ username: "", email: "", password: "" });
@@ -27,18 +29,32 @@ function SignUp({ hideAppHeader }) {
   const { setUser } = useAuthContext();
 
   useEffect(() => {
-    document.body.style.backgroundImage = `url("https://marketplace.canva.com/EAEthkBVLfQ/1/0/1600w/canva-blush-wave-desktop-wallpaper-drvq3zaYl2E.jpg")`;
+    document.body.style.backgroundImage = ``;
     return () => {
       document.body.style.backgroundImage = "";
     };
   }, []);
+
+  const isEmailValid = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const handleInputChange = (e) => {
     setForm((prevForm) => ({ ...prevForm, [e.target.name]: e.target.value }));
   };
 
   const onFinish = async (values) => {
+    const { username, email, password } = values;
+
+    if (!isEmailValid(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
     setIsLoading(true);
+    setError(""); // Clear any previous errors
+
     try {
       const response = await fetch(`${API}/auth/local/register`, {
         method: "POST",
@@ -49,53 +65,53 @@ function SignUp({ hideAppHeader }) {
       });
 
       const data = await response.json();
-      if (data?.error) {
-        throw data?.error;
-      } else {
+      if (response.ok) {
         setToken(data.jwt);
+        setUser(data.user);
         navigate("/"); // Redirect to home page
+      } else {
+        setError(data?.message || "Something went wrong!");
       }
     } catch (error) {
       console.error(error);
-      setError(error?.message ?? "Something went wrong!");
-    } 
+      setError("Something went wrong!");
+    } finally {
+      setIsLoading(false); // Make sure to stop loading in both success and error scenarios
+    }
   };
 
   return (
     <ThemeProvider theme={createTheme()}>
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          minHeight: '100vh',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          minHeight: "100vh",
         }}
       >
-        
         <CssBaseline />
         <Box
           component={Paper}
           elevation={6}
           sx={{
-            width: '100%',
-            maxWidth: '400px',
-            my: 'auto',
+            width: "100%",
+            maxWidth: "400px",
+            my: "auto",
             mx: 3,
             p: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign Up
           </Typography>
-          {error && (
-            <Typography color="error">{error}</Typography>
-          )}
+          {error && <Typography color="error">{error}</Typography>}
           <Box
             component="form"
             noValidate
@@ -104,7 +120,7 @@ function SignUp({ hideAppHeader }) {
               onFinish(form);
             }}
             sx={{
-              width: '100%',
+              width: "100%",
               mt: 1,
             }}
           >
@@ -160,6 +176,7 @@ function SignUp({ hideAppHeader }) {
             <Link
               variant="body2"
               onClick={() => navigate("/signin")}
+              sx={{ cursor: "pointer" }} // Add this line
             >
               {"Already have an account? Sign In"}
             </Link>

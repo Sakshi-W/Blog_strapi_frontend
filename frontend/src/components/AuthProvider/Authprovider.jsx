@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { Snackbar } from "@mui/material";
+
 import { AuthContext } from "../../context/AuthContext";
-import { Snackbar } from "@mui/material"; // Updated import statement
 import { API, BEARER } from "../../constant";
 import { getToken } from "../../helpers";
 
-const AuthProvider = ({ children }) => {
-  const [userData, setUserData] = useState();
+export default function AuthProvider({ children }) {
+  const [userData, setUserData] = useState(null); // Initialize userData as null
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const authToken = getToken();
 
@@ -18,12 +20,15 @@ const AuthProvider = ({ children }) => {
       });
       const data = await response.json();
 
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to fetch user data.");
+      }
+
       setUserData(data);
+      setError(""); // Reset the error state if successful
     } catch (error) {
       console.error(error);
-      // Use Snackbar component instead of message.error
-      // to display the error message
-      // Example: <Snackbar open={true} message="Error While Getting Logged In User Details" />
+      setError(error.message || "Error while fetching user data.");
     } finally {
       setIsLoading(false);
     }
@@ -31,6 +36,14 @@ const AuthProvider = ({ children }) => {
 
   const handleUser = (user) => {
     setUserData(user);
+  };
+
+  const userHasReadPermission = () => {
+    return (
+      userData &&
+      userData.roles &&
+      userData.roles.some((role) => role.name === "blogsread")
+    );
   };
 
   useEffect(() => {
@@ -41,11 +54,25 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user: userData, setUser: handleUser, isLoading }}
+      value={{
+        user: userData,
+        setUser: handleUser,
+        isLoading,
+        userHasReadPermission,
+      }}
     >
       {children}
+      <Snackbar
+        open={Boolean(error)}
+        onClose={() => setError("")}
+        message={error}
+        autoHideDuration={5000}
+      />
     </AuthContext.Provider>
   );
-};
+}
 
-export default AuthProvider;
+// Export the useAuthContext function separately
+export function useAuthContext() {
+  return useContext(AuthContext);
+}

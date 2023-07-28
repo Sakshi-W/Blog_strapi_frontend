@@ -71,28 +71,13 @@
       "required": true,
       "maxLength": 20
     },
-    "avatar_url": {
-      "type": "string",
-      "regex": "        RegExp pattern: [(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
-    },
-    "website_url": {
-      "type": "string",
-      "regex": "        RegExp pattern: [(http(s)?):\\/\\/(www\\.)?a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)"
-    },
-    "twitter_username": {
-      "type": "string",
-      "unique": true
-    },
-    "linkedin_username": {
-      "type": "string",
-      "unique": true
-    },
-    "github_username": {
-      "type": "string",
-      "unique": true
-    },
     "profile_slug": {
       "type": "uid"
+    },
+    "BlogsRead": {
+      "type": "boolean",
+      "default": false,
+      "required": true
     }
   }
 }

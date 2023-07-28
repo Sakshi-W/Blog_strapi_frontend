@@ -1,16 +1,8 @@
 import React from "react";
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from "react-router-dom"; // Make sure you import BrowserRouter as Router
-import App from './App';
-import AuthProvider from "./components/AuthProvider/AuthProvider";
+import App from "./App";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <AuthProvider>
-      <Router>
-        <App />
-      </Router>
-    </AuthProvider>
-  </React.StrictMode>,
-  document.getElementById("root")
+const root = ReactDOM.render(
+      <App />,
+  document.getElementById('root')
 );
