@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import {
   Avatar,
   Button,
@@ -16,7 +16,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 
-import { useAuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { API } from "../../constant";
 import { setToken } from "../../helpers";
 import "./SignUp.css"; // Import the CSS file
@@ -26,7 +26,7 @@ function SignUp({ hideAppHeader }) {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { setUser } = useAuthContext();
+  const { setUser } = useContext(AuthContext);
 
   useEffect(() => {
     document.body.style.backgroundImage = ``;
@@ -68,7 +68,7 @@ function SignUp({ hideAppHeader }) {
       if (response.ok) {
         setToken(data.jwt);
         setUser(data.user);
-        navigate("/"); // Redirect to home page
+        navigate("/home"); // Redirect to home page
       } else {
         setError(data?.message || "Something went wrong!");
       }
@@ -105,9 +105,11 @@ function SignUp({ hideAppHeader }) {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
+           <img
+            src="https://static.wixstatic.com/media/ca5e11_bf2d01eac4b64762b0621d98d60f793c~mv2.png"
+            alt="Logo"
+            style={{ width: "80px", height: "80px", borderRadius: "50%" }}
+          />
           <Typography component="h1" variant="h5">
             Sign Up
           </Typography>

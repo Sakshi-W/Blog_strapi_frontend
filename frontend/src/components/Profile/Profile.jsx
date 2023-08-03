@@ -1,27 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Button, Card, Grid, TextField, Snackbar } from "@mui/material";
 
-import { useAuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { API } from "../../constant";
 import { getToken } from "../../helpers";
 
 import "../../styles/fonts/fonts.css";
 
 const Profile = () => {
+  const { user, setUser, isLoading } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
-  const { user, isLoading, setUser } = useAuthContext();
-
-  // State to manage error messages
   const [error, setError] = useState("");
+  const [updatedUser, setUpdatedUser] = useState({ ...user });
+
+  useEffect(() => {
+    if (user) {
+      setUpdatedUser({ ...user });
+    }
+  }, [user]);
 
   // Handle changes to the user data
   const handleUserChange = (e) => {
     const { name, value } = e.target;
     setUpdatedUser((prevUser) => ({ ...prevUser, [name]: value }));
   };
-
-  // Create a copy of the user state to handle input changes
-  const [updatedUser, setUpdatedUser] = useState({ ...user });
 
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
@@ -55,9 +57,6 @@ const Profile = () => {
     }
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>; // Replace with MUI CircularProgress
-  }
   return (
     <div style={{ padding: "10px", marginTop: "2px" }}>
       <Card className="profile_page_card">
@@ -89,7 +88,7 @@ const Profile = () => {
             </Grid>
           </Grid>
 
-          <Grid item xs={12} style={{ paddingTop: "9px" }}>
+          <Grid item xs={12} style={{ paddingTop: "9px", textAlign:'center' }}>
             <TextField
               style={{ fontFamily: "Gentinum_Plus" }}
               label="About"

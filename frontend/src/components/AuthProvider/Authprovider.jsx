@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Snackbar } from "@mui/material";
 
 import { AuthContext } from "../../context/AuthContext";
@@ -6,11 +6,20 @@ import { API, BEARER } from "../../constant";
 import { getToken } from "../../helpers";
 
 export default function AuthProvider({ children }) {
-  const [userData, setUserData] = useState(null); // Initialize userData as null
+  const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const authToken = getToken();
+  const localUser = localStorage.getItem('user');
+
+  useEffect(() => {
+    if (localUser) {
+      setUserData(JSON.parse(localUser));
+    } else if (authToken) {
+      fetchLoggedInUser(authToken);
+    }
+  }, [authToken]);
 
   const fetchLoggedInUser = async (token) => {
     setIsLoading(true);
@@ -24,33 +33,22 @@ export default function AuthProvider({ children }) {
         throw new Error(data.message || "Failed to fetch user data.");
       }
 
+      localStorage.setItem('user', JSON.stringify(data));
       setUserData(data);
-      setError(""); // Reset the error state if successful
+      setError("");
     } catch (error) {
       console.error(error);
       setError(error.message || "Error while fetching user data.");
+      localStorage.removeItem('user'); // Clear local storage
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleUser = (user) => {
+    localStorage.setItem('user', JSON.stringify(user));
     setUserData(user);
   };
-
-  const userHasReadPermission = () => {
-    return (
-      userData &&
-      userData.roles &&
-      userData.roles.some((role) => role.name === "blogsread")
-    );
-  };
-
-  useEffect(() => {
-    if (authToken) {
-      fetchLoggedInUser(authToken);
-    }
-  }, [authToken]);
 
   return (
     <AuthContext.Provider
@@ -58,7 +56,6 @@ export default function AuthProvider({ children }) {
         user: userData,
         setUser: handleUser,
         isLoading,
-        userHasReadPermission,
       }}
     >
       {children}
@@ -70,9 +67,4 @@ export default function AuthProvider({ children }) {
       />
     </AuthContext.Provider>
   );
-}
-
-// Export the useAuthContext function separately
-export function useAuthContext() {
-  return useContext(AuthContext);
 }

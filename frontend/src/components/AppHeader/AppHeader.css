@@ -1,47 +1,54 @@
+@import url('../../styles/fonts/fonts.css');
+
 .header {
-  
-  background-size: contain; /* Adjust to "cover" if you want the image to cover the entire header */
-  background-repeat: no-repeat;
-  background-position: center;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  height: 30px !important;
+  background-image: "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8aDZcy0pgBukwWZtirLqpLyVnD05eNm9j2w&usqp=CAU')";
+  font-family: 'Ysabeau_Office';
 }
-
-
 
 .logo-image {
-  max-height: 100%; /* Set the maximum height of the image to fit the header */
-  max-width: 100%; /* Set the maximum width of the image to fit the header */
-  display: block; /* Remove any inline spacing to avoid unexpected gaps */
-  margin: 0 auto;
-  height: 60px; /* Center the image horizontally (if needed) */
+  max-height: 100%;
+  max-width: 100%;
+  display: block;
+  height: 40px;
+  margin-right: 10px;
 }
-.left-buttons,
-.right-buttons,
-.Homebutton {
+
+.left-buttons {
+  display: flex;
+  align-items: center;
   background-color: transparent;
   border: none;
-  color: #5e35b1;
+  color: #000; /* Set font color to black */
+  padding-top: 5px;
+  font-size: 14px;
+  text-decoration: none; /* Remove underline by default */
+  font-family: 'Ysabeau_Office';
 }
 
-.SignUpbutton,
-.profile_save_btn,
-.Loginbutton,
-.logoutButton {
+.right-buttons {
+  display: flex;
+  align-items: center;
+  padding-bottom: 3px;
+  font-family: 'Ysabeau_Office';
+}
+
+.header-button {
   background-color: transparent;
   border: none;
-  color: #5e35b1;
-  box-shadow: none; 
-}
+  color: #000; /* Set font color to black */
+  box-shadow: none; /* Remove shadow */
+  padding: 0;
+  font-size: 14px;
+  text-decoration: none; /* Remove underline by default */
+  position: relative; /* Add position relative for the pseudo-element */
 
-.left-buttons,
-.right-buttons,
-.Homebutton:hover,
-.SignUpbutton,
-.Loginbutton,
-.profile_save_btn:hover,
-.logoutButton:hover {
-  background-color: transparent;
-}
-
-.header {
-  height: 100px;
+  /* Add the underline effect on hover */
+  &:hover {
+    color: white;
+    background-color: black;
+  }
 }

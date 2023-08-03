@@ -1,10 +1,10 @@
-import React from "react";
-import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-
+import { AuthContext } from "./context/AuthContext";
 import Home from "./pages/Home/Home";
 import SignIn from "./pages/SignIn/SignIn";
 import SignUp from "./pages/SignUp/SignUp";
@@ -13,7 +13,7 @@ import Footer from "./components/AppFooter/AppFooter";
 import AppHeader from "./components/AppHeader/AppHeader";
 import About from "./pages/About/About";
 import Profile from "./components/Profile/Profile";
-import AuthProvider, { useAuthContext } from "./components/AuthProvider/AuthProvider"; // Import useAuthContext here
+import AuthProvider from "./components/AuthProvider/Authprovider";
 import AccessDenied from "./pages/AccessDenied/AccessDenied";
 
 const mainContentStyle = {
@@ -26,33 +26,48 @@ const theme = createTheme({
 });
 
 export default function App() {
-  const { user, isLoading } = useAuthContext();
-
-  if (isLoading) {
-    // Show a loading indicator or splash screen while user data is loading
-    return <div>Loading...</div>;
-  }
-
   return (
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <BrowserRouter>
-         <AppHeader /> {/* Show AppHeader only when the user is authenticated */}
-          <div style={mainContentStyle}>
-            <Routes>
-              <Route path="/signin" element={<SignIn />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/" element={<Home />} />
-              <Route path="/blog/:id" element={<BlogContent />} />
-              <Route path="/access-denied" element={<AccessDenied />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/profile" element={<Profile />} />
-            </Routes>
-          </div>
-          <Footer />
+          <AppRoutes />
         </BrowserRouter>
-        <ToastContainer position="top-right" autoClose={3000} />
       </AuthProvider>
+      <ToastContainer position="top-right" autoClose={3000} />
     </ThemeProvider>
+  );
+}
+
+function AppRoutes() {
+  const { user } = useContext(AuthContext);
+  const location = useLocation();
+
+  return (
+    <>
+      {location.pathname !== "/" && location.pathname !== "/signup" && (
+        <AppHeader />
+      )}
+      <div style={mainContentStyle}>
+        <Routes>
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<SignIn />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route
+            path="/blog/:id"
+            element={
+              user && user.BlogsRead ? <BlogContent /> : <AccessDenied />
+            }
+          />
+          <Route path="/about" element={<About />} />
+          <Route
+            path="/profile"
+            element={user ? <Profile /> : <SignIn />}
+          />
+          <Route path="/access-denied" element={<AccessDenied />} />
+        </Routes>
+      </div>
+      <Footer />
+    </>
   );
 }

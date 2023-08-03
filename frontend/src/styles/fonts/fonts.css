@@ -32,4 +32,31 @@
     font-weight: normal;
     font-style: normal;
   }
+
+  @font-face {
+    font-family: 'Cormormant_Garamond';
+    src: url('./Cormorant_Garamond//CormorantGaramond-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Merriweather';
+    src: url('./Merriweather//Merriweather-Black.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Playfair_Display';
+    src: url('./Playfair_Display//PlayfairDisplay-Italic-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Ysabeau_Office';
+    src: url('./Ysabeau_Office///YsabeauOffice-Italic-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+
   

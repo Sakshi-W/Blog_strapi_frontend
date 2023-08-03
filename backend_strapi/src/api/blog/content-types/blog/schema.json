@@ -31,6 +31,17 @@
         "videos",
         "audios"
       ]
+    },
+    "compImg1": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     }
   }
 }

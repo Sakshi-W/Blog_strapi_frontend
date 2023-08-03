@@ -1,17 +1,16 @@
-import React from "react";
-import { Button, Grid, Toolbar } from "@mui/material";
+import React, { useContext } from "react";
+import { Button, Box, Toolbar } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { useAuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { removeToken } from "../../helpers";
 import './AppHeader.css'; // Import the CSS file
-
 
 // Import the logo image
 import logoImage from "../../assets/logo.png";
 
 const AppHeader = () => {
-  const { user, setUser } = useAuthContext();
+  const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   // Get the current location
@@ -32,31 +31,29 @@ const AppHeader = () => {
   }
 
   return (
-    <Toolbar className="header" style={{ height: '100px',backgroundColor: 'rgba(0, 0, 0, 0.2)', borderBottom: '2px solid grey' }} >
-      <Grid container alignItems="center" spacing={2}>
-        <Grid item className="left-buttons">
-          {/* Add the logo image */}
+    <Toolbar className="header" style={{ height: '40px', backgroundColor: '#00b8d4' }}>
+      <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
+        <Box display="flex" alignItems="center" className="left-buttons">
           <img src={logoImage} alt="Logo" className="logo-image" />
-          <Button href="/" variant="text" className="Homebutton">
+          <Button href="/home" variant="text" style={{ color: '#fff', fontSize: '14px', background: 'transparent', boxShadow: 'none', border: 'none', paddingBottom: '10px' }}>
             Home
           </Button>
-        </Grid>
-        <Grid item flexGrow={1}></Grid>
-        <Grid item className="right-buttons">
+        </Box>
+        <Box display="flex" alignItems="center" className="right-buttons" >
           {user ? (
             <>
               <Button
                 href="/profile"
                 variant="outlined"
                 color="inherit"
-                className="profile_save_btn"
+                style={{ color: '#fff', fontSize: '14px', background: 'transparent', boxShadow: 'none', border: 'none', padding: '0', marginRight: "10px" }}
               >
                 {user.username}
               </Button>
               <Button
                 variant="contained"
                 onClick={handleLogout}
-                className="logoutButton" // Updated class name
+                style={{ color: '#fff', fontSize: '14px', background: 'transparent', boxShadow: 'none', border: 'none', padding: '0' }}
               >
                 Logout
               </Button>
@@ -66,21 +63,21 @@ const AppHeader = () => {
               <Button
                 href="/signin"
                 variant="text"
-                className="Loginbutton"
+                style={{ color: '#fff', fontSize: '14px', background: 'transparent', boxShadow: 'none', border: 'none', padding: '0' }}
               >
                 Login
               </Button>
               <Button
                 href="/signup"
                 variant="contained"
-                className="SignUpbutton"
+                style={{ color: '#fff', fontSize: '14px', background: 'transparent', boxShadow: 'none', border: 'none', padding: '0' }}
               >
                 SignUp
               </Button>
             </>
           )}
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Toolbar>
   );
 };
